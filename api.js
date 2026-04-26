@@ -43,19 +43,15 @@ async function fetchCart() {
  * @returns {Promise<Object>} - 回傳購物車資料
  */
 async function addToCart(productId, quantity) {
-  // 請實作此函式
-  try {    
-    const body = {
-     data: {
-        productId,
-        quantity
-      } 
-    }
-    const response = await axios.post(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, body);
-    return response.data;
-  } catch (error) {
-    console.error('加入購物車失敗：', error);
-  }
+  // 請實作此函式 
+  const body = {
+    data: {
+      productId,
+      quantity
+    } 
+  };
+  const response = await axios.post(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, body);
+  return response.data;
 }
 
 /**
@@ -66,19 +62,14 @@ async function addToCart(productId, quantity) {
  */
 async function updateCartItem(cartId, quantity) {
   // 請實作此函式
-  try {
-    const body = {
-      data: { 
-        id:cartId,
-        quantity
-      }
+  const body = {
+    data: { 
+      id:cartId,
+      quantity
     }
-    const response = await axios.patch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, body);
-    return response.data;
-  } catch (error) {
-    console.error('更新購物車商品數量失敗：', error);
   }
-
+  const response = await axios.patch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, body);
+  return response.data;
 }
 
 /**
@@ -117,18 +108,14 @@ async function clearCart() {
  */
 async function createOrder(userInfo) {
   // 請實作此函式
-  try {
-    const body = {
-      data: {
-        user: userInfo
-      }
+  const body = {
+    data: {
+      user: userInfo
     }
-
-    const response = await axios.post(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/orders`, body);
-    return response.data;
-  } catch (error) {
-    console.error('建立訂單失敗：', error);
   }
+
+  const response = await axios.post(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/orders`, body);
+  return response.data;
 }
 
 // ========== 管理員 API ==========
@@ -167,22 +154,18 @@ async function fetchOrders() {
  */
 async function updateOrderStatus(orderId, isPaid) {
   // 請實作此函式
-  try {
-    const body = {
-      data: {
-        id: orderId,
-        isPaid,
-      }
+  const body = {
+    data: {
+      id: orderId,
+      paid: isPaid
     }
-    const response = await axios.put(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`, body, {
-      headers: {
-        authorization: ADMIN_TOKEN
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('更新訂單狀態失敗：', error);
   }
+  const response = await axios.put(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`, body, {
+    headers: {
+      authorization: ADMIN_TOKEN
+    }
+  });
+  return response.data;
 }
 
 /**
@@ -192,16 +175,12 @@ async function updateOrderStatus(orderId, isPaid) {
  */
 async function deleteOrder(orderId) {
   // 請實作此函式
-  try {
-    const response = await axios.delete(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders/${orderId}`, {
-      headers: {
-        authorization: ADMIN_TOKEN
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('刪除訂單失敗：', error);
-  }
+  const response = await axios.delete(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders/${orderId}`, {
+    headers: {
+      authorization: ADMIN_TOKEN
+    }
+  });
+  return response.data;
 }
 
 module.exports = {

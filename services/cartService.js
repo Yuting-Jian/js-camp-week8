@@ -28,9 +28,14 @@ async function addProductToCart(productId, quantity) {
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
   const validation = validateCartQuantity(quantity);
   if (!validation.isValid) {
-    return validation; // { isValid: false, error: '...' }
+    return { success: false, error: validation.error };
   }
-  return await addToCart(productId, quantity);
+  try {
+    const cartData = await addToCart(productId, quantity);
+    return { success: true, data: cartData };
+  } catch (error) {
+    return { success: false, error: '加入購物車失敗' };
+  }
 }
 
 /**
@@ -44,10 +49,16 @@ async function updateProduct(cartId, quantity) {
   // 提示：先用 utils validateCartQuantity() 驗證數量，驗證失敗時回傳 { success: false, error: ... }
   // 驗證通過後，呼叫 updateCartItem() 更新數量
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
-    if (!validation.isValid) {
-      return validation; // { isValid: false, error: '...' }
-    } 
-    return await updateCartItem(cartId, quantity);
+  const validation = validateCartQuantity(quantity);
+  if (!validation.isValid) {
+    return { success: false, error: validation.error }; // { isValid: false, error: '...' }
+  }
+  try { 
+    const cartData = await updateCartItem(cartId, quantity);
+    return { success: true, data: cartData };
+  } catch (error) {
+    return { success: false, error: '更新購物車失敗' };
+  }
 }
 
 /**
@@ -59,7 +70,14 @@ async function removeProduct(cartId) {
   // 請實作此函式
   // 提示：呼叫 deleteCartItem()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
-  return await deleteCartItem(cartId);
+  try {
+    const cartData = await deleteCartItem(cartId); 
+    return { success: true, data: cartData };
+    
+  } catch (error) {
+    return { success: false, error: '移除購物車商品失敗' };
+  }
+  
 }
 
 /**
@@ -70,7 +88,13 @@ async function emptyCart() {
   // 請實作此函式
   // 提示：呼叫 clearCart()
   // 回傳格式：{ success: true, data: ... } 
-  return await clearCart();
+  try {
+    const cartData = await clearCart();
+    return { success: true, data: cartData };
+  } catch (error) {
+    return { success: false, error: '清空購物車失敗' };
+  }
+ 
 }
 
 /**

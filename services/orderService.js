@@ -17,13 +17,13 @@ async function placeOrder(userInfo) {
   // 回傳格式：{ success: true, data: ... } / { success: false, errors: [...] }
   const validation = validateOrderUser(userInfo);
   if (!validation.isValid) {
-    return validation; // { isValid: false, errors: [...] }
+    return { success: false, errors: validation.errors }; // { isValid: false, errors: [...] }
   }
   try {
     const orderData = await createOrder(userInfo);
     return { success: true, data: orderData };
   } catch (error) {
-    return { success: false, errors: [error.message] };
+    return { success: false, errors:'建立訂單失敗' };
   }
 }
 
@@ -69,7 +69,12 @@ async function updatePaymentStatus(orderId, isPaid) {
   // 請實作此函式
   // 提示：呼叫 updateOrderStatus()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
-  return await updateOrderStatus(orderId, isPaid);
+  try {
+    const updatedOrder = await updateOrderStatus(orderId, isPaid);
+    return { success: true, data: updatedOrder };
+  } catch (error) {
+    return { success: false, error: '更新訂單狀態失敗' };
+  }
 }
 
 /**
@@ -81,7 +86,12 @@ async function removeOrder(orderId) {
   // 請實作此函式
   // 提示：呼叫 deleteOrder()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
-  return await deleteOrder(orderId);
+  try {
+   const deletedOrder = await deleteOrder(orderId);
+   return { success: true, data: deletedOrder }; 
+  } catch (error) {
+    return { success: false, error: '刪除訂單失敗' };
+  }
 }
 
 /**
